@@ -33,7 +33,8 @@ from enrich2.basic import BasicSeqLib
 from enrich2.overlap import OverlapSeqLib
 from enrich2.idonly import IdOnlySeqLib
 from enrich2.storemanager import SCORING_METHODS, LOGR_METHODS
-from enrich2.gui.configurator import Configurator
+
+# from enrich2.gui.configurator import Configurator
 from enrich2.sfmap import parse_aa_list
 from enrich2 import __version__
 
@@ -55,8 +56,8 @@ def main_gui():
 
     """
     logging.basicConfig(level=LOG_LEVEL, format=LOG_FORMAT)
-    app = Configurator(__version__)
-    app.mainloop()
+    # app = Configurator(__version__)
+    # app.mainloop()
 
 
 def main_cmd():
@@ -68,7 +69,9 @@ def main_cmd():
     desc_string = (
         "Command-line driver for Enrich2 v{}".format(__version__)
         + "\n\nscoring methods:\n"
-        + "\n".join(["  {:22}{}".format(k, v) for k, v in list(SCORING_METHODS.items())])
+        + "\n".join(
+            ["  {:22}{}".format(k, v) for k, v in list(SCORING_METHODS.items())]
+        )
         + "\n\nlog ratio methods:\n"
         + "\n".join(["  {:22}{}".format(k, v) for k, v in list(LOGR_METHODS.items())])
     )
@@ -90,9 +93,7 @@ def main_cmd():
     )
 
     # add support for semantic version checking
-    parser.add_argument(
-        "--version", action="version", version="{}".format(__version__)
-    )
+    parser.add_argument("--version", action="version", version="{}".format(__version__))
 
     # add analysis options
     parser.add_argument(
@@ -147,7 +148,9 @@ def main_cmd():
         log_dir = os.path.dirname(args.log_file)
         if not os.path.exists(log_dir):
             os.makedirs(log_dir)
-        logging.basicConfig(filename=args.log_file, encoding='utf-8', level=LOG_LEVEL, format=LOG_FORMAT)
+        logging.basicConfig(
+            filename=args.log_file, encoding="utf-8", level=LOG_LEVEL, format=LOG_FORMAT
+        )
     else:
         logging.basicConfig(level=LOG_LEVEL, format=LOG_FORMAT)
     logger = logging.getLogger(__name__)
@@ -205,9 +208,9 @@ def main_cmd():
 
     if args.sfmap_aa_file is not None:
         obj.plot_options = dict()
-        obj.plot_options["aa_list"], obj.plot_options[
-            "aa_label_groups"
-        ] = parse_aa_list(args.sfmap_aa_file)
+        obj.plot_options["aa_list"], obj.plot_options["aa_label_groups"] = (
+            parse_aa_list(args.sfmap_aa_file)
+        )
 
     # configure the object
     obj.configure(cfg)
